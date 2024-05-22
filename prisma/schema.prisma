@@ -34,33 +34,33 @@ model Users {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   userProfile   UserProfiles?
-  AdminProfiles AdminProfiles?
+  adminProfiles AdminProfiles?
 }
 
 model AdminProfiles {
   id           String   @id @default(uuid())
   userId       String   @unique
-  profileImage String?  @default("")
+  profileImage String?
   bio          String
   age          Int
   address      String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user         Users    @relation(fields: [userId], references: [id])
-  Trips        Trips[]
+  trips        Trips[]
 }
 
 model UserProfiles {
   id            String          @id @default(uuid())
   userId        String          @unique
-  profieImage   String?         @default("")
+  profileImage  String?
   bio           String
   age           Int
   address       String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   users         Users           @relation(fields: [userId], references: [id])
-  RequestModels RequestModels[]
+  requestModels RequestModels[]
 }
 
 model Trips {
