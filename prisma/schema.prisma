@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  password     String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  userProfile  UserProfiles?
+  trip         Trips[]
+  requestModel RequestModels[]
+}
+
+model UserProfiles {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  bio       String
+  age       Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     Users    @relation(fields: [userId], references: [id])
+}
+
+model Trips {
+  id           String          @id @default(uuid())
+  userId       String
+  destination  String
+  startDate    String
+  endDate      String
+  budget       Int
+  activities   String[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  user         Users           @relation(fields: [userId], references: [id])
+  requestModel RequestModels[]
+}
+
+enum RequestModelStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model RequestModels {
+  id        String             @id @default(uuid())
+  tripId    String
+  userId    String
+  status    RequestModelStatus @default(PENDING)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  trip      Trips              @relation(fields: [tripId], references: [id])
+  user      Users              @relation(fields: [userId], references: [id])
+}
