@@ -126,8 +126,8 @@ const getAll = async (
  * @param payload token, userId and tripId
  * @returns trip request data
  */
-const requestTrip = async (payload: { token: string, userId: string, tripId: string }) => {
-  const { token, userId, tripId } = payload;
+const requestTrip = async (payload: { token: string, tripId: string }) => {
+  const { token, tripId } = payload;
 
   const isTokenMatch = Token.verify(token, config.TOKEN.ACCESS_TOKEN_SECRET) as TTokenPayload;
   if (!isTokenMatch) throw new Error('not valid token');
@@ -135,7 +135,7 @@ const requestTrip = async (payload: { token: string, userId: string, tripId: str
   const isTripIdExcited = await prisma.trips.findUnique({ where: { id: tripId } });
   if (!isTripIdExcited) throw new Error('no trip found');
 
-  const isUserIdExcited = await prisma.users.findUnique({ where: { id: userId } });
+  const isUserIdExcited = await prisma.userProfiles.findUnique({ where: { id: isTokenMatch.id } });
   if (!isUserIdExcited) throw new Error('no user found');
 
   const result = await prisma.requestModels.create({
