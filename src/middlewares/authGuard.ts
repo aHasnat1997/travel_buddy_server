@@ -14,11 +14,7 @@ export const authGuard = (...accessTo: UserRole[]) => async (req: Request, res: 
     if (!token) throw new Error('No token found...');
 
     const userTokenDecode = Token.verify(token, config.TOKEN.ACCESS_TOKEN_SECRET) as TTokenPayload;
-    console.log({ userTokenDecode });
-
     const isRoleMatched = accessTo.find(r => r === userTokenDecode.role);
-    console.log({ isRoleMatched });
-
     if (!isRoleMatched) throw new Error('Unauthorized User...');
 
     req.user = userTokenDecode;

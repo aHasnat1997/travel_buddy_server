@@ -100,8 +100,10 @@ const login = async (payload: TUserLogin) => {
   const isPasswordMatch = await bcrypt.compare(payload.password, isUserExisted.password);
   if (!isPasswordMatch) throw new Error('Password not match');
 
+  const userId = isUserExisted.adminProfiles ? isUserExisted.adminProfiles.id : isUserExisted.userProfile ? isUserExisted.userProfile.id : '';
+
   const tokenPayload: TTokenPayload = {
-    id: isUserExisted.id,
+    id: userId,
     name: isUserExisted.name,
     role: isUserExisted.role
   };

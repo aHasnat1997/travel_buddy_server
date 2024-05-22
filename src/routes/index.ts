@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserRoute from "../modules/users/users.route";
+import TripRouter from "../modules/trips/trip.route";
 
 /**
  * creating router using express router
@@ -21,6 +22,10 @@ const moduleRoutes: TModulesRouters[] = [
   {
     path: '/auth',
     router: UserRoute
+  },
+  {
+    path: '/trips',
+    router: TripRouter
   }
 ];
 

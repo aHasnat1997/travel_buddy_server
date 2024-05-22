@@ -1,8 +1,11 @@
 export type TTrip = {
-  userId?: string,
-  destination: string;
-  startDate: string;
-  endDate: string;
-  budget: number;
-  activities: string[];
+  userId: string,
+  tripDetails: string,
+  startingPoint: string,
+  destination: string,
+  startDate: Date,
+  endDate: Date,
+  budget: number,
+  activities: string[],
+  capacity: number,
 };
