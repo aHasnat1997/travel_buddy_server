@@ -8,14 +8,14 @@ const RequestModelsRoute = Router();
 
 RequestModelsRoute.get(
   '/:tripId',
-  authGuard(),
+  authGuard('ADMIN', 'SUPER_ADMIN'),
   RequestModelsController.tripRequests
 )
 
 RequestModelsRoute.put(
-  '/:buddyId/respond',
+  '/:requestId/respond',
   validateRequest(RequestModelsValidation.StatusSchema),
-  authGuard(),
+  authGuard('ADMIN', 'SUPER_ADMIN'),
   RequestModelsController.updateReqStatus
 )
 

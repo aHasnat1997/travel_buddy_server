@@ -17,7 +17,7 @@ const tripRequests = handelAsyncReq(async (req: Request, res: Response) => {
 });
 
 const updateReqStatus = handelAsyncReq(async (req: Request, res: Response) => {
-  const result = await RequestModelsService.updateRequestStatus(req.params.buddyId, req.body.status);
+  const result = await RequestModelsService.updateRequestStatus(req.params.requestId, req.body.status);
   successResponse(res, {
     message: 'Travel buddy request responded successfully',
     data: result

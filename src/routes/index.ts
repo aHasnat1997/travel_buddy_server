@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserRoute from "../modules/users/users.route";
 import TripRouter from "../modules/trips/trip.route";
+import RequestModelsRoute from "../modules/requestModels/requestModels.route";
 
 /**
  * creating router using express router
@@ -26,6 +27,10 @@ const moduleRoutes: TModulesRouters[] = [
   {
     path: '/trips',
     router: TripRouter
+  },
+  {
+    path: '/travel-buddies',
+    router: RequestModelsRoute
   }
 ];
 

@@ -12,15 +12,18 @@ const getSingleTripReq = async (tripId: string) => {
     where: {
       tripId
     },
-    select: {
-      id: true,
-      tripId: true,
-      userId: true,
-      status: true,
-      createdAt: true,
-      updatedAt: true,
+    include: {
       trip: true,
-      user: true
+      user: {
+        include: {
+          users: {
+            select: {
+              name: true,
+              email: true,
+            }
+          }
+        }
+      }
     }
   });
   return result;
@@ -28,13 +31,13 @@ const getSingleTripReq = async (tripId: string) => {
 
 /**
  * update request trip status
- * @param buddyId RequestModels id
+ * @param requestId RequestModels id
  * @param status "PENDING" | "APPROVED" | "REJECTED"
  * @returns update data
  */
-const updateRequestStatus = async (buddyId: string, status: RequestModelStatus) => {
+const updateRequestStatus = async (requestId: string, status: RequestModelStatus) => {
   const result = await prisma.requestModels.update({
-    where: { id: buddyId },
+    where: { id: requestId },
     data: { status }
   });
   return result;
