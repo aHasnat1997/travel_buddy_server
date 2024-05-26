@@ -107,7 +107,14 @@ const getAll = async (
     } : {
       createdAt: 'desc'
     },
-    where: { AND: conditions }
+    where: { AND: conditions },
+    include: {
+      creator: {
+        include: {
+          user: true
+        }
+      }
+    }
   });
   const totalData = await prisma.trips.count({ where: { AND: conditions } })
 

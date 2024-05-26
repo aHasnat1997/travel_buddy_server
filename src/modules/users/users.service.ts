@@ -37,8 +37,7 @@ const userRegistration = async (payload: TUserRegistration) => {
     id: result.user.id,
     name: result.user.name,
     email: result.user.email,
-    createdAt: result.user.createdAt,
-    updatedAt: result.user.updatedAt
+    role: result.user.role
   };
 };
 
@@ -75,8 +74,7 @@ const adminRegistration = async (payload: TUserRegistration) => {
     id: result.user.id,
     name: result.user.name,
     email: result.user.email,
-    createdAt: result.user.createdAt,
-    updatedAt: result.user.updatedAt
+    role: result.user.role
   };
 };
 
