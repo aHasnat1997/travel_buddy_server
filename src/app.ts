@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { AllRoutes } from './routes';
 import { globalErrorHandler } from './error/globalErrorHandler';
 import { HTTPStatusCode } from './utils/httpCode';
+import config from './config';
 
 export class Rocket {
   private app: Express;
@@ -15,7 +16,7 @@ export class Rocket {
   // express parsers
   load() {
     this.app.use(express.json());
-    this.app.use(cors());
+    this.app.use(cors({ origin: config.CLINT_URL, credentials: true }));
     this.app.use(cookieParser());
   }
 

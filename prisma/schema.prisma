@@ -13,46 +13,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id           String          @id @default(uuid())
-  name         String
-  email        String          @unique
-  password     String
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  userProfile  UserProfiles?
-  trip         Trips[]
-  requestModel RequestModels[]
-}
-
-model UserProfiles {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  bio       String
-  age       Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     Users    @relation(fields: [userId], references: [id])
-}
-
-model Trips {
-  id           String          @id @default(uuid())
-  userId       String
-  destination  String
-  startDate    String
-  endDate      String
-  budget       Int
-  activities   String[]
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  user         Users           @relation(fields: [userId], references: [id])
-  requestModel RequestModels[]
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
 }
 
 enum RequestModelStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+model Users {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          UserRole       @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userProfile   UserProfiles?
+  adminProfiles AdminProfiles?
+}
+
+model AdminProfiles {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  profileImage String?
+  bio          String
+  age          Int
+  address      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         Users    @relation(fields: [userId], references: [id])
+  trips        Trips[]
+}
+
+model UserProfiles {
+  id            String          @id @default(uuid())
+  userId        String          @unique
+  profileImage  String?
+  bio           String
+  age           Int
+  address       String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  users         Users           @relation(fields: [userId], references: [id])
+  requestModels RequestModels[]
+}
+
+model Trips {
+  id            String          @id @default(uuid())
+  userId        String
+  tripDetails   String
+  startingPoint String
+  destination   String
+  startDate     DateTime
+  endDate       DateTime
+  budget        Int
+  activities    String[]
+  capacity      Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  creator       AdminProfiles   @relation(fields: [userId], references: [id])
+  requestModel  RequestModels[]
 }
 
 model RequestModels {
@@ -63,5 +88,5 @@ model RequestModels {
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
   trip      Trips              @relation(fields: [tripId], references: [id])
-  user      Users              @relation(fields: [userId], references: [id])
+  user      UserProfiles       @relation(fields: [userId], references: [id])
 }
