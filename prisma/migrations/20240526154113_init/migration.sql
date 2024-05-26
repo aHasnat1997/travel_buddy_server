@@ -21,7 +21,7 @@ CREATE TABLE "Users" (
 CREATE TABLE "AdminProfiles" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "profileImage" TEXT DEFAULT '',
+    "profileImage" TEXT,
     "bio" TEXT NOT NULL,
     "age" INTEGER NOT NULL,
     "address" TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE "AdminProfiles" (
 CREATE TABLE "UserProfiles" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "profieImage" TEXT DEFAULT '',
+    "profileImage" TEXT,
     "bio" TEXT NOT NULL,
     "age" INTEGER NOT NULL,
     "address" TEXT NOT NULL,
@@ -59,7 +59,6 @@ CREATE TABLE "Trips" (
     "capacity" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userProfilesId" TEXT,
 
     CONSTRAINT "Trips_pkey" PRIMARY KEY ("id")
 );
