@@ -2,7 +2,7 @@
 
 #### ER Diagram : https://app.eraser.io/workspace/8Mo8LicLuRW74UJxbdlu?origin=share
 
-#### Live Link: https://_____.vercel.app/
+#### Live Link: https://travelbuddyserver-ahasnat1997s-projects.vercel.app
 
 ### 👉 **Technology Stack:**
 - **Programming Language:** TypeScript
