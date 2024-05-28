@@ -32,12 +32,22 @@ const adminRegistration = handelAsyncReq(async (req: Request, res: Response) => 
 const login = handelAsyncReq(async (req: Request, res: Response) => {
   const result = await UserService.login(req.body);
   res.cookie('refreshToken', result.refreshToken, {
-    httpOnly: true,
-    secure: true
+    httpOnly: true
   })
   successResponse(res, {
     message: 'User logged in successfully',
     data: result.data
+  }, HTTPStatusCode.Ok)
+});
+
+/**
+ * user logout
+ */
+const logout = handelAsyncReq(async (req: Request, res: Response) => {
+  res.clearCookie('refreshToken');
+  successResponse(res, {
+    message: 'User logged out successfully',
+    data: ''
   }, HTTPStatusCode.Ok)
 });
 
@@ -69,6 +79,7 @@ export const UserController = {
   userRegistration,
   adminRegistration,
   login,
+  logout,
   getUserProfile,
   updateProfile
 };

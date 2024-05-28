@@ -35,6 +35,14 @@ UserRoute.post(
 );
 
 /**
+ * user logout route
+ */
+UserRoute.post(
+  '/logout',
+  UserController.logout
+);
+
+/**
  * user profile route
  */
 UserRoute.get(
