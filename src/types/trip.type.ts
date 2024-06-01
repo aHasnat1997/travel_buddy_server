@@ -1,5 +1,7 @@
 export type TTrip = {
   userId: string,
+  tripTitle: string,
+  tripImage: string[]
   tripDetails: string,
   startingPoint: string,
   destination: string,
@@ -7,5 +9,6 @@ export type TTrip = {
   endDate: Date,
   budget: number,
   activities: string[],
-  capacity: number,
+  totalBooked: number,
+  totalSlots: number,
 };

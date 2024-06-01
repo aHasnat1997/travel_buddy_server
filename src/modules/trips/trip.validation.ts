@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 const TripSchema = z.object({
+  tripTitle: z.string(),
+  tripImage: z.array(z.string()),
   tripDetails: z.string(),
   startingPoint: z.string(),
   destination: z.string(),
@@ -8,11 +10,12 @@ const TripSchema = z.object({
   endDate: z.string(),
   budget: z.number(),
   activities: z.array(z.string()),
-  capacity: z.number()
+  totalSlots: z.number(),
 });
 
 const RequestTripSchema = z.object({
-  userId: z.string()
+  slotsForBook: z.number(),
+  totalAmount: z.number()
 })
 
 export const TripValidation = {

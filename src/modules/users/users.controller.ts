@@ -3,12 +3,18 @@ import handelAsyncReq from "../../utils/handelAsyncReq";
 import { UserService } from "./users.service";
 import successResponse from "../../utils/successResponse";
 import { HTTPStatusCode } from "../../utils/httpCode";
+import { pick } from "../../utils/pickObjFromArray";
 
 /**
  * user registration
  */
 const userRegistration = handelAsyncReq(async (req: Request, res: Response) => {
-  const result = await UserService.userRegistration(req.body);
+  const userData = {
+    role: 'USER',
+    ...req.body,
+  };
+
+  const result = await UserService.registration(userData);
   successResponse(res, {
     message: 'User registered successfully',
     data: result
@@ -19,11 +25,29 @@ const userRegistration = handelAsyncReq(async (req: Request, res: Response) => {
  * admin registration
  */
 const adminRegistration = handelAsyncReq(async (req: Request, res: Response) => {
-  const result = await UserService.adminRegistration(req.body);
+  const userData = {
+    role: 'ADMIN',
+    ...req.body,
+  };
+  const result = await UserService.registration(userData);
   successResponse(res, {
     message: 'Admin registered successfully',
     data: result
   }, HTTPStatusCode.Created)
+});
+
+/**
+ * get all users
+ */
+const getAll = handelAsyncReq(async (req: Request, res: Response) => {
+  const filters = pick(req.query, ['name', 'email', 'role']);
+  const options = pick(req.query, ['page', 'limit', 'sortBy', 'sortOrder']);
+  const result = await UserService.getAllUser(filters, options);
+  successResponse(res, {
+    message: 'Users retrieved successfully',
+    mete: result.meta,
+    data: result.data
+  }, HTTPStatusCode.Ok)
 });
 
 /**
@@ -78,6 +102,7 @@ const updateProfile = handelAsyncReq(async (req: Request, res: Response) => {
 export const UserController = {
   userRegistration,
   adminRegistration,
+  getAll,
   login,
   logout,
   getUserProfile,

@@ -7,6 +7,15 @@ import { authGuard } from "../../middlewares/authGuard";
 const UserRoute = Router();
 
 /**
+ * get all user route
+ */
+UserRoute.get(
+  '/users',
+  authGuard('ADMIN', 'SUPER_ADMIN'),
+  UserController.getAll
+)
+
+/**
  * user registration route
  */
 UserRoute.post(

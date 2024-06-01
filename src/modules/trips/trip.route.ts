@@ -18,6 +18,7 @@ TripRouter.post(
 TripRouter.get(
   '/:tripId/request',
   authGuard('USER'),
+  validateRequest(TripValidation.RequestTripSchema),
   TripController.tripRequest
 );
 

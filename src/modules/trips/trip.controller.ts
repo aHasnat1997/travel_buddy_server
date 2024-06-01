@@ -37,7 +37,8 @@ const getAll = handelAsyncReq(async (req: Request, res: Response) => {
 const tripRequest = handelAsyncReq(async (req: Request, res: Response) => {
   const token = req.headers.authorization || '';
   const tripId = req.params.tripId;
-  const result = await TripService.requestTrip({ token, tripId });
+  const bookingInfo = req.body;
+  const result = await TripService.requestTrip(token, tripId, bookingInfo);
   successResponse(res, {
     message: 'Travel buddy request sent successfully',
     data: result

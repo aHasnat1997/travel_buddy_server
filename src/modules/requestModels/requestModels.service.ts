@@ -1,4 +1,4 @@
-import { RequestModelStatus } from "@prisma/client";
+import { TripBookingstatus } from "@prisma/client";
 import prisma from "../../db";
 
 /**
@@ -8,7 +8,7 @@ import prisma from "../../db";
  * @returns trip all request
  */
 const getSingleTripReq = async (tripId: string) => {
-  const result = await prisma.requestModels.findMany({
+  const result = await prisma.tripBookings.findMany({
     where: {
       tripId
     },
@@ -35,8 +35,8 @@ const getSingleTripReq = async (tripId: string) => {
  * @param status "PENDING" | "APPROVED" | "REJECTED"
  * @returns update data
  */
-const updateRequestStatus = async (requestId: string, status: RequestModelStatus) => {
-  const result = await prisma.requestModels.update({
+const updateRequestStatus = async (requestId: string, status: TripBookingstatus) => {
+  const result = await prisma.tripBookings.update({
     where: { id: requestId },
     data: { status }
   });

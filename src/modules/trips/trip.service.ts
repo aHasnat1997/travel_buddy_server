@@ -17,6 +17,8 @@ const create = async (payload: { token: string, data: TTrip }) => {
 
   const tripData = {
     userId: isTokenMatch.id,
+    tripTitle: data.tripTitle,
+    tripImage: data.tripImage,
     tripDetails: data.tripDetails,
     startingPoint: data.startingPoint,
     destination: data.destination,
@@ -24,9 +26,9 @@ const create = async (payload: { token: string, data: TTrip }) => {
     endDate: data.endDate,
     budget: data.budget,
     activities: data.activities,
-    capacity: data.capacity
+    totalBooked: data.totalBooked,
+    totalSlots: data.totalSlots,
   }
-  console.info({ token, data, isTokenMatch, tripData });
 
   const result = await prisma.trips.create({
     data: tripData
@@ -51,7 +53,7 @@ const getAll = async (
   }
 ) => {
   const conditions: Prisma.TripsWhereInput[] = [];
-  const searchTermKeyArray = ['destination', 'startDate', 'endDate'];
+  const searchTermKeyArray = ['tripTitle', 'destination', 'startDate', 'endDate'];
   const { searchTerm, budget, minBudget, maxBudget, ...restFilters } = filters;
 
   const pageLimit = Number(options.limit) || 10;
@@ -111,7 +113,12 @@ const getAll = async (
     include: {
       creator: {
         include: {
-          user: true
+          user: {
+            select: {
+              name: true,
+              email: true,
+            }
+          }
         }
       }
     }
@@ -133,9 +140,11 @@ const getAll = async (
  * @param payload token, userId and tripId
  * @returns trip request data
  */
-const requestTrip = async (payload: { token: string, tripId: string }) => {
-  const { token, tripId } = payload;
-
+type TBookingInfo = {
+  slotsForBook: number,
+  totalAmount: number
+}
+const requestTrip = async (token: string, tripId: string, bookingInfo: TBookingInfo) => {
   const isTokenMatch = Token.verify(token, config.TOKEN.ACCESS_TOKEN_SECRET) as TTokenPayload;
   if (!isTokenMatch) throw new Error('not valid token');
 
@@ -145,10 +154,12 @@ const requestTrip = async (payload: { token: string, tripId: string }) => {
   const isUserIdExcited = await prisma.userProfiles.findUnique({ where: { id: isTokenMatch.id } });
   if (!isUserIdExcited) throw new Error('no user found');
 
-  const result = await prisma.requestModels.create({
+  const result = await prisma.tripBookings.create({
     data: {
       tripId,
-      userId: isTokenMatch.id
+      userId: isTokenMatch.id,
+      slotsForBook: bookingInfo.slotsForBook,
+      totalAmount: bookingInfo.totalAmount
     }
   });
   return result;

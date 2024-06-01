@@ -80,7 +80,7 @@ model Trips {
   endDate       DateTime
   budget        Float
   activities    String[]
-  totalBooked   Int
+  totalBooked   Int            @default(0)
   totalSlots    Int
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
