@@ -19,10 +19,15 @@ enum UserRole {
   SUPER_ADMIN
 }
 
-enum RequestModelStatus {
+enum TripBookingstatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
 }
 
 model Users {
@@ -51,42 +56,58 @@ model AdminProfiles {
 }
 
 model UserProfiles {
-  id            String          @id @default(uuid())
-  userId        String          @unique
-  profileImage  String?
-  bio           String
-  age           Int
-  address       String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  users         Users           @relation(fields: [userId], references: [id])
-  requestModels RequestModels[]
+  id           String         @id @default(uuid())
+  userId       String         @unique
+  profileImage String?
+  bio          String
+  age          Int
+  address      String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  users        Users          @relation(fields: [userId], references: [id])
+  tripBookings TripBookings[]
 }
 
 model Trips {
-  id            String          @id @default(uuid())
+  id            String         @id @default(uuid())
   userId        String
+  tripTitle     String
+  tripImage     String[]
   tripDetails   String
   startingPoint String
   destination   String
   startDate     DateTime
   endDate       DateTime
-  budget        Int
+  budget        Float
   activities    String[]
-  capacity      Int
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  creator       AdminProfiles   @relation(fields: [userId], references: [id])
-  requestModel  RequestModels[]
+  totalBooked   Int
+  totalSlots    Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  creator       AdminProfiles  @relation(fields: [userId], references: [id])
+  tripBookings  TripBookings[]
 }
 
-model RequestModels {
-  id        String             @id @default(uuid())
-  tripId    String
-  userId    String
-  status    RequestModelStatus @default(PENDING)
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
-  trip      Trips              @relation(fields: [tripId], references: [id])
-  user      UserProfiles       @relation(fields: [userId], references: [id])
+model TripBookings {
+  id           String            @id @default(uuid())
+  tripId       String
+  userId       String
+  slotsForBook Int
+  totalAmount  Float
+  status       TripBookingstatus @default(PENDING)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  trip         Trips             @relation(fields: [tripId], references: [id])
+  user         UserProfiles      @relation(fields: [userId], references: [id])
+  payment      Payment?
+}
+
+model Payment {
+  id                 String        @id @default(uuid())
+  bookingId          String        @unique
+  amount             Float         @default(0.00)
+  transactionId      String        @unique
+  paymentGatewayData Json?
+  status             PaymentStatus @default(UNPAID)
+  bookingInfo        TripBookings  @relation(fields: [bookingId], references: [id])
 }
