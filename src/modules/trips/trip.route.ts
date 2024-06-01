@@ -15,7 +15,7 @@ TripRouter.post(
   TripController.create
 );
 
-TripRouter.get(
+TripRouter.post(
   '/:tripId/request',
   authGuard('USER'),
   validateRequest(TripValidation.RequestTripSchema),

@@ -12,3 +12,8 @@ export type TTrip = {
   totalBooked: number,
   totalSlots: number,
 };
+
+export type TTripBooking = {
+  slotsForBook: number,
+  totalAmount: number
+}

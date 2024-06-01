@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import config from "../../config";
 import prisma from "../../db";
 import { TTokenPayload, Token } from "../../utils/token";
-import { TTrip } from "../../types/trip.type";
+import { TTrip, TTripBooking } from "../../types/trip.type";
 
 /**
  * create single trip
@@ -112,15 +112,17 @@ const getAll = async (
     where: { AND: conditions },
     include: {
       creator: {
-        include: {
+        select: {
+          id: true,
           user: {
             select: {
               name: true,
-              email: true,
+              email: true
             }
           }
         }
-      }
+      },
+      tripBookings: true
     }
   });
   const totalData = await prisma.trips.count({ where: { AND: conditions } })
@@ -137,14 +139,10 @@ const getAll = async (
 
 /**
  * request a trip
- * @param payload token, userId and tripId
+ * @param payload token, tripId and booking info 
  * @returns trip request data
  */
-type TBookingInfo = {
-  slotsForBook: number,
-  totalAmount: number
-}
-const requestTrip = async (token: string, tripId: string, bookingInfo: TBookingInfo) => {
+const requestTrip = async (token: string, tripId: string, bookingInfo: TTripBooking) => {
   const isTokenMatch = Token.verify(token, config.TOKEN.ACCESS_TOKEN_SECRET) as TTokenPayload;
   if (!isTokenMatch) throw new Error('not valid token');
 
