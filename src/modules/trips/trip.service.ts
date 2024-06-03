@@ -3,6 +3,7 @@ import config from "../../config";
 import prisma from "../../db";
 import { TTokenPayload, Token } from "../../utils/token";
 import { TTrip, TTripBooking } from "../../types/trip.type";
+import { Payment } from "../../utils/paymentGateway";
 
 /**
  * create single trip
@@ -137,34 +138,8 @@ const getAll = async (
   };
 };
 
-/**
- * request a trip
- * @param payload token, tripId and booking info 
- * @returns trip request data
- */
-const requestTrip = async (token: string, tripId: string, bookingInfo: TTripBooking) => {
-  const isTokenMatch = Token.verify(token, config.TOKEN.ACCESS_TOKEN_SECRET) as TTokenPayload;
-  if (!isTokenMatch) throw new Error('not valid token');
-
-  const isTripIdExcited = await prisma.trips.findUnique({ where: { id: tripId } });
-  if (!isTripIdExcited) throw new Error('no trip found');
-
-  const isUserIdExcited = await prisma.userProfiles.findUnique({ where: { id: isTokenMatch.id } });
-  if (!isUserIdExcited) throw new Error('no user found');
-
-  const result = await prisma.tripBookings.create({
-    data: {
-      tripId,
-      userId: isTokenMatch.id,
-      slotsForBook: bookingInfo.slotsForBook,
-      totalAmount: bookingInfo.totalAmount
-    }
-  });
-  return result;
-};
 
 export const TripService = {
   create,
-  getAll,
-  requestTrip
+  getAll
 };

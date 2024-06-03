@@ -15,11 +15,4 @@ TripRouter.post(
   TripController.create
 );
 
-TripRouter.post(
-  '/:tripId/request',
-  authGuard('USER'),
-  validateRequest(TripValidation.RequestTripSchema),
-  TripController.tripRequest
-);
-
 export default TripRouter;

@@ -13,12 +13,5 @@ const TripSchema = z.object({
   totalSlots: z.number(),
 });
 
-const RequestTripSchema = z.object({
-  slotsForBook: z.number(),
-  totalAmount: z.number()
-})
 
-export const TripValidation = {
-  TripSchema,
-  RequestTripSchema
-}
+export const TripValidation = { TripSchema };

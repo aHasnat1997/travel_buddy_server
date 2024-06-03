@@ -17,5 +17,14 @@ export default {
     REFRESH_TOKEN_EXPIRES_TIME: process.env.REFRESH_TOKEN_EXPIRES_TIME as string,
     FORGOT_TOKEN_SECRET: process.env.FORGOT_TOKEN_SECRET as string,
     FORGOT_TOKEN_EXPIRES_TIME: process.env.FORGOT_TOKEN_EXPIRES_TIME as string
+  },
+  SSLCOMMERZ: {
+    STORE_ID: process.env.STORE_ID,
+    STORE_PASSWD: process.env.STORE_PASSWD,
+    SUCCESS_URL: process.env.SUCCESS_URL,
+    FAIL_URL: process.env.FAIL_URL,
+    CANCEL_URL: process.env.CANCEL_URL,
+    PAYMENT_INIT_URL: process.env.PAYMENT_INIT_URL,
+    VALIDATE_URL: process.env.VALIDATE_URL,
   }
 }
