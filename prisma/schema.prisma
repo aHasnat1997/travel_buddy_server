@@ -72,7 +72,7 @@ model Trips {
   id            String         @id @default(uuid())
   userId        String
   tripTitle     String
-  tripImage     String[]
+  tripImage     String[]       @default([])
   tripDetails   String
   startingPoint String
   destination   String

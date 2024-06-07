@@ -2,8 +2,7 @@ import { Prisma } from "@prisma/client";
 import config from "../../config";
 import prisma from "../../db";
 import { TTokenPayload, Token } from "../../utils/token";
-import { TTrip, TTripBooking } from "../../types/trip.type";
-import { Payment } from "../../utils/paymentGateway";
+import { TTrip } from "../../types/trip.type";
 
 /**
  * create single trip
@@ -19,7 +18,7 @@ const create = async (payload: { token: string, data: TTrip }) => {
   const tripData = {
     userId: isTokenMatch.id,
     tripTitle: data.tripTitle,
-    tripImage: data.tripImage,
+    tripImage: [],
     tripDetails: data.tripDetails,
     startingPoint: data.startingPoint,
     destination: data.destination,
@@ -138,8 +137,24 @@ const getAll = async (
   };
 };
 
+/**
+ * Update singe data
+ * @param payload tripId and update data
+ * @returns trip updated data
+ */
+const updateTrip = async (payload: { tripId: string, data: Partial<TTrip> }) => {
+  const { tripId, data } = payload;
+
+  const updatedData = await prisma.trips.update({
+    where: { id: tripId },
+    data
+  });
+
+  return updatedData
+}
 
 export const TripService = {
   create,
-  getAll
+  getAll,
+  updateTrip
 };

@@ -22,18 +22,33 @@ const registration = async (payload: TUserRegistration) => {
         role: payload.role
       }
     });
-    const userProfile = await tx.userProfiles.create({
-      data: {
-        userId: user.id,
-        age: payload.profile.age,
-        bio: payload.profile.bio,
-        address: payload.profile.address,
-        profileImage: payload.profile.profileImage
-      }
-    });
-    return { user, userProfile }
-  });
+    let profileData;
 
+    if (user.role === UserRole.ADMIN || user.role === UserRole.SUPER_ADMIN) {
+      profileData = await tx.adminProfiles.create({
+        data: {
+          userId: user.id,
+          age: payload.profile.age,
+          bio: payload.profile.bio,
+          address: payload.profile.address,
+          profileImage: payload.profile.profileImage
+        }
+      });
+    };
+    if (user.role === UserRole.USER) {
+      profileData = await tx.userProfiles.create({
+        data: {
+          userId: user.id,
+          age: payload.profile.age,
+          bio: payload.profile.bio,
+          address: payload.profile.address,
+          profileImage: payload.profile.profileImage
+        }
+      });
+    };
+
+    return { user, profileData }
+  });
   return {
     id: result.user.id,
     name: result.user.name,

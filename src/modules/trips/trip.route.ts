@@ -15,4 +15,11 @@ TripRouter.post(
   TripController.create
 );
 
+TripRouter.put(
+  '/:tripId',
+  authGuard('ADMIN', 'SUPER_ADMIN'),
+  validateRequest(TripValidation.UpdateSchema),
+  TripController.update
+)
+
 export default TripRouter;

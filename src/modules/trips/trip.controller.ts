@@ -31,7 +31,19 @@ const getAll = handelAsyncReq(async (req: Request, res: Response) => {
   }, HTTPStatusCode.Ok)
 });
 
+/**
+ * update a trip
+ */
+const update = handelAsyncReq(async (req: Request, res: Response) => {
+  const result = await TripService.updateTrip({ tripId: req.params.tripId, data: req.body });
+  successResponse(res, {
+    message: 'Trip update successfully',
+    data: result
+  }, HTTPStatusCode.Created)
+});
+
 export const TripController = {
   create,
-  getAll
+  getAll,
+  update
 };
