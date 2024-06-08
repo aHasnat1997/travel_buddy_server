@@ -8,6 +8,8 @@ const TripRouter = Router();
 
 TripRouter.get('/', TripController.getAll);
 
+TripRouter.get('/:tripId', TripController.getSingle);
+
 TripRouter.post(
   '/',
   authGuard('ADMIN', 'SUPER_ADMIN'),

@@ -32,6 +32,17 @@ const getAll = handelAsyncReq(async (req: Request, res: Response) => {
 });
 
 /**
+ * get single trip
+ */
+const getSingle = handelAsyncReq(async (req: Request, res: Response) => {
+  const result = await TripService.singleTrip(req.params.tripId);
+  successResponse(res, {
+    message: 'Trip data successfully retrieved',
+    data: result
+  }, HTTPStatusCode.Ok)
+});
+
+/**
  * update a trip
  */
 const update = handelAsyncReq(async (req: Request, res: Response) => {
@@ -45,5 +56,6 @@ const update = handelAsyncReq(async (req: Request, res: Response) => {
 export const TripController = {
   create,
   getAll,
+  getSingle,
   update
 };

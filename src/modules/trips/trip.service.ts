@@ -138,6 +138,46 @@ const getAll = async (
 };
 
 /**
+ * find single trip by id
+ * @param tripId single trip id
+ * @returns trip full details
+ */
+const singleTrip = async (tripId: string) => {
+  const result = await prisma.trips.findUniqueOrThrow({
+    where: { id: tripId },
+    select: {
+      id: true,
+      tripTitle: true,
+      tripImage: true,
+      tripDetails: true,
+      startingPoint: true,
+      destination: true,
+      startDate: true,
+      endDate: true,
+      budget: true,
+      activities: true,
+      totalBooked: true,
+      totalSlots: true,
+      createdAt: true,
+      updatedAt: true,
+      creator: {
+        select: {
+          user: {
+            select: {
+              name: true,
+              email: true
+            }
+          }
+        }
+      },
+      tripBookings: true
+    }
+  });
+
+  return result
+}
+
+/**
  * Update singe data
  * @param payload tripId and update data
  * @returns trip updated data
@@ -156,5 +196,6 @@ const updateTrip = async (payload: { tripId: string, data: Partial<TTrip> }) => 
 export const TripService = {
   create,
   getAll,
+  singleTrip,
   updateTrip
 };
